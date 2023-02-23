@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package employee;
+
+option go_package = "./pkg/pb";
+
+service EmployeeService {
+    rpc AddEmployee(AddEmployeeRequest) returns (AddEmployeeResponse){}
+    rpc RemoveEmployee(RemoveEmployeeRequest) returns (RemoveEmployeeResponse){}
+    rpc LongOp(LongOpRequest) returns (LongOpResponse){}
+    rpc SortBy(SortByRequest) returns (SortByResponse){}
+    rpc AvgMedianSalary(AvgMedianSalaryRequest) returns (AvgMedianSalaryResponse){}
+}
+
+enum SortField{
+    NAME = 0;
+    BIRTHDAY = 1;
+    SALARY = 2;
+}
+
+message AddEmployeeBody {
+    string name = 1;
+    google.protobuf.Timestamp birthday = 2;
+    double salary = 3;
+}
+
+message Employee {
+    int64 id = 1;
+    string name = 2;
+    google.protobuf.Timestamp birthday = 3;
+    double salary = 4;
+}
+
+message AddEmployeeRequest{
+    AddEmployeeBody employee = 1;
+}
+
+message AddEmployeeResponse{
+    int64 id = 1;
+    int64 status = 2;
+    string error = 3;
+}
+
+message RemoveEmployeeRequest {
+    int64 id = 1;
+}
+
+message RemoveEmployeeResponse {
+    int64 status = 1;
+    string error = 2;
+}
+
+// Duration in seconds
+message LongOpRequest {
+    int64 duration = 1;
+}
+
+message LongOpResponse {
+    int64 ok = 1;
+}
+
+message SortByRequest {
+    SortField sortField = 1;
+}
+
+message SortByResponse {
+    repeated Employee employees = 1;
+}
+
+message AvgMedianSalaryRequest {}
+
+message AvgMedianSalaryResponse {
+    double avgSalary = 1;
+    double medianSalary = 2;
+}
